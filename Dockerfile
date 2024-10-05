@@ -40,7 +40,7 @@ RUN set -ex \
         zlib-static \
     && git clone --depth=1 -b v${SRB2KART_VERSION} https://github.com/STJr/Kart-Public.git /srb2kart \
     && (cd /srb2kart/src \
-        && make -j$(nproc) LINUX64=1 NOHW=1 NOGME=1 STATIC=1) \
+        && make -j$(nproc) LINUX64=1 NOHW=1 NOGME=1) \
     && cp /srb2kart/bin/Linux64/Release/lsdl2srb2kart /usr/bin/srb2kart \
     && apk del .build-deps \
     && rm -rf /srb2kart

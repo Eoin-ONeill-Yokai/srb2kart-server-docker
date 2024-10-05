@@ -17,7 +17,7 @@ Containerized version of [SRB2Kart](https://mb.srb2.org/showthread.php?t=43708),
 This will pull an image with SRB2Kart and start a dedicated netgame server on port `5029/udp`:
 
 ```bash
-docker run -it --name srb2kart -p 5029:5029/udp rwanyoike/srb2kart-server:latest
+docker run -it --name srb2kart -p 5029:5029/udp eoin-oneill-yokai/srb2kart-server:latest
 ```
 
 ### Data Volume
