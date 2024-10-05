@@ -37,6 +37,8 @@ srb2kart-myserver
 1 directory, 4 files
 ```
 
+Additionally, all files found in `srb2kart-myserver/servermods` will automatically be loaded into the game exectubale and enabled on the server. 
+
 > This directory must be accessible to the user account that is used to run SRB2Kart inside the container. If your host machine is run under *nix OS, SRB2Kart uses the non-root account `10001:10001` (`group:id`, respectively).
 
 ```bash
@@ -49,51 +51,11 @@ docker run --rm -it --name srb2kart \
     addons/kr_xxx.pk3
 ```
 
-### systemd
-
-Here's an example of how to run the container as a service on Linux with the help of `systemd`.
-
-1. Create a systemd service descriptor file:
-
-  ```ini
-  # /etc/systemd/system/docker.srb2kart.service
-
-  [Unit]
-  Description=SRB2Kart Server
-  Requires=docker.service
-  After=docker.service
-  # Ref: https://www.freedesktop.org/software/systemd/man/systemd.unit.html#StartLimitIntervalSec=interval
-  StartLimitIntervalSec=60s
-  StartLimitBurst=2
-
-  [Service]
-  TimeoutStartSec=0
-  Restart=on-failure
-  RestartSec=5s
-  ExecStartPre=/usr/bin/docker stop %n
-  ExecStartPre=/usr/bin/docker rm %n
-  ExecStartPre=/usr/bin/docker pull rwanyoike/srb2kart-server:<version>
-  ExecStart=/usr/bin/docker run --rm --name %n \
-      -v <path to data directory>:/data \
-      -p <port on host>:5029/udp \
-      rwanyoike/srb2kart-server:<version>
-
-  [Install]
-  WantedBy=multi-user.target
-  ```
-
-2. Enable starting the service on system boot:
-
-  ```bash
-  systemctl enable docker.srb2kart
-  ```
-
 ## Manual Build
 
 ```bash
-git clone https://github.com/rwanyoike/srb2kart-server-docker
+git clone https://github.com/eoin-oneill-yokai/srb2kart-server-docker
 cd srb2kart-server-docker/
-# Ref: https://github.com/STJr/Kart-Public/releases
 docker build --build-arg "SRB2KART_VERSION=<version>" \
     -t srb2kart-server:<version> .
 ```

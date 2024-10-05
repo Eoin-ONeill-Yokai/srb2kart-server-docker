@@ -1,0 +1,7 @@
+services:
+  kart-server:
+    image: docker.io/eoinoneill1991/srb2kart-server:v1.6
+    ports:
+      - 5029:5029
+    volumes:
+      - ./kartdata:/data
