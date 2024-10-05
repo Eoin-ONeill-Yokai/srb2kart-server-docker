@@ -65,5 +65,5 @@ WORKDIR ${SRB2KART_DIRECTORY}
 EXPOSE 5029/udp
 
 STOPSIGNAL SIGINT
-ENTRYPOINT ["start-srb2kart-server.sh"]
+ENTRYPOINT ["/usr/bin/start-srb2kart-server.sh"]
 CMD ["-dedicated"]
