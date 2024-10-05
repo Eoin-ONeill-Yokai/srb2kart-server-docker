@@ -1,18 +1,20 @@
 FROM alpine:3.12
 
 # Ref: https://github.com/STJr/Kart-Public/releases
-ARG SRB2KART_VERSION=1.3
+ARG SRB2KART_VERSION=1.6
 ARG SRB2KART_USER=srb2kart
+ENV SRB2KART_DIRECTORY=/usr/share/games/SRB2Kart
+ENV SRB2KART_MODS_DIRECTORY=/home/${SRB2KART_USER}/.srb2kart/servermods
 
 # Ref: https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=srb2kart-data
 RUN set -ex \
     && apk add --no-cache --virtual .build-deps curl \
     && mkdir -p /srb2kart-data \
-    && curl -L -o /tmp/srb2kart-v${SRB2KART_VERSION//./}-Installer.exe https://github.com/STJr/Kart-Public/releases/download/v${SRB2KART_VERSION}/srb2kart-v${SRB2KART_VERSION//./}-Installer.exe \
-    && unzip -d /srb2kart-data /tmp/srb2kart-v${SRB2KART_VERSION//./}-Installer.exe \
+    && curl -L -o /tmp/srb2kart-v${SRB2KART_VERSION//./}-Assets.zip https://github.com/STJr/Kart-Public/releases/download/v${SRB2KART_VERSION}/AssetsLinuxOnly.zip \
+    && unzip -d /srb2kart-data /tmp/srb2kart-v${SRB2KART_VERSION//./}-Assets.zip \
     && find /srb2kart-data/mdls -type d -exec chmod 0755 {} \; \
     && mkdir -p /usr/share/games \
-    && mv /srb2kart-data /usr/share/games/SRB2Kart \
+    && mv /srb2kart-data $SRB2KART_DIRECTORY \
     && apk del .build-deps
 
 # Ref: https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=srb2kart
@@ -43,20 +45,25 @@ RUN set -ex \
     && apk del .build-deps \
     && rm -rf /srb2kart
 
+# Add script that auto-loads mods from specific `servermods` folder, se SRB2KART_MODS_DIRECTORY
+COPY ./start-srb2kart-server.sh /usr/bin/start-srb2kart-server.sh
+RUN set -ex \
+    && chmod -x /usr/bin/start-srb2kart-server.sh
+
 VOLUME /data
 
-RUN adduser -D -u 10001 ${SRB2KART_USER} \
+# User setup
+RUN adduser -D -u 10001 -g 10001 ${SRB2KART_USER} \
     && ln -s /data /home/${SRB2KART_USER}/.srb2kart \
     && chown ${SRB2KART_USER} /data
 
 USER ${SRB2KART_USER}
+RUN mkdir -p ${SRB2KART_MODS_DIRECTORY}
+WORKDIR ${SRB2KART_DIRECTORY}
 
-WORKDIR /usr/share/games/SRB2Kart
-
+# Port definition
 EXPOSE 5029/udp
 
 STOPSIGNAL SIGINT
-
-ENTRYPOINT ["srb2kart"]
-
+ENTRYPOINT ["start-srb2kart-server.sh"]
 CMD ["-dedicated"]
