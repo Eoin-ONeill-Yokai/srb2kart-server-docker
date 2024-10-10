@@ -48,14 +48,25 @@ RUN set -ex \
 # Add script that auto-loads mods from specific `servermods` folder, se SRB2KART_MODS_DIRECTORY
 COPY ./start-srb2kart-server.sh /usr/bin/start-srb2kart-server.sh
 RUN set -ex \
-    && chmod -x /usr/bin/start-srb2kart-server.sh
+    && chmod a+x /usr/bin/start-srb2kart-server.sh
 
 VOLUME /data
+
+RUN apk add --no-cache \
+        curl-dev \
+        curl-static \
+        libpng-dev \
+        libpng-static \
+        sdl2_mixer-dev \
+        sdl2-dev \
+        sdl2 \
+        nginx \
+        zip
 
 # User setup
 RUN adduser -D -u 10001 -g 10001 ${SRB2KART_USER} \
     && ln -s /data /home/${SRB2KART_USER}/.srb2kart \
-    && chown ${SRB2KART_USER} /data
+    && chown -R ${SRB2KART_USER} /data
 
 USER ${SRB2KART_USER}
 RUN mkdir -p ${SRB2KART_MODS_DIRECTORY}
@@ -65,5 +76,5 @@ WORKDIR ${SRB2KART_DIRECTORY}
 EXPOSE 5029/udp
 
 STOPSIGNAL SIGINT
-ENTRYPOINT ["/usr/bin/start-srb2kart-server.sh"]
+ENTRYPOINT ["start-srb2kart-server.sh"]
 CMD ["-dedicated"]

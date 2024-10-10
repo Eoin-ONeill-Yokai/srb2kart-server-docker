@@ -1,6 +1,8 @@
 services:
   kart-server:
     image: docker.io/eoinoneill1991/srb2kart-server:v1.6
+    environment:
+      - SERVER_NAME="SRB2Kart Docker Image" 
     ports:
       - 5029:5029
     volumes:
