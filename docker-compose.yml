@@ -4,6 +4,7 @@ services:
     environment:
       - SERVER_NAME="SRB2Kart Docker Image" 
     ports:
-      - 5029:5029
+      - 5029:5029/udp
+      - 8420:80
     volumes:
       - ./kartdata:/data

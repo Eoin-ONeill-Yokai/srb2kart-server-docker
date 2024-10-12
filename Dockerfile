@@ -68,12 +68,36 @@ RUN adduser -D -u 10001 -g 10001 ${SRB2KART_USER} \
     && ln -s /data /home/${SRB2KART_USER}/.srb2kart \
     && chown -R ${SRB2KART_USER} /data
 
+
+# Direct download location definition
+COPY ./direct-download.conf /etc/nginx/conf.d/direct-download.conf
+RUN mkdir -p /var/www/html
+RUN chown -R root:www-data /etc/nginx/conf.d/direct-download.conf
+RUN ln -s /data/servermods /var/www/html/repo
+RUN chown -h ${SRB2KART_USER} /var/www/html/repo
+
+# Disable nginx user and set up for use as non-root user
+RUN mkdir -p /var/cache/nginx && chown -R ${SRB2KART_USER} /var/cache/nginx && \
+    mkdir -p /var/log/nginx && chown -R ${SRB2KART_USER} /var/log/nginx && \
+    mkdir -p /var/lib/nginx && chown -R ${SRB2KART_USER} /var/lib/nginx && \
+    mkdir -p /run/nginx && touch /run/nginx/nginx.pid && chown -R ${SRB2KART_USER} /run/nginx/nginx.pid && \
+    chown -R ${SRB2KART_USER} /etc/nginx && \
+    chmod -R 777 /etc/nginx/conf.d
+
+RUN sed -i 's/user nginx;/#user nginx;/g' /etc/nginx/nginx.conf
+
+# Don't forget to remove the default
+RUN rm /etc/nginx/conf.d/default.conf
+
+
+# User context switch
 USER ${SRB2KART_USER}
 RUN mkdir -p ${SRB2KART_MODS_DIRECTORY}
 WORKDIR ${SRB2KART_DIRECTORY}
 
 # Port definition
 EXPOSE 5029/udp
+EXPOSE 80/tcp
 
 STOPSIGNAL SIGINT
 ENTRYPOINT ["start-srb2kart-server.sh"]
