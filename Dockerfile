@@ -50,7 +50,7 @@ COPY ./start-srb2kart-server.sh /usr/bin/start-srb2kart-server.sh
 RUN set -ex \
     && chmod a+x /usr/bin/start-srb2kart-server.sh
 
-VOLUME /data
+RUN mkdir -p /data
 
 RUN apk add --no-cache \
         curl-dev \
