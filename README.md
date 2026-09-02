@@ -17,7 +17,7 @@ Containerized version of [SRB2Kart](https://mb.srb2.org/showthread.php?t=43708),
 This will pull an image with SRB2Kart and start a dedicated netgame server on port `5029/udp`:
 
 ```bash
-docker run -it --name srb2kart -p 5029:5029/udp eoin-oneill-yokai/srb2kart-server:latest
+docker run -it --name srb2kart -p 5029:5029/udp ghcr.io/eoin-oneill-yokai/srb2kart-server
 ```
 
 ### Data Volume
@@ -45,10 +45,7 @@ Additionally, all files found in `srb2kart-myserver/servermods` will automatical
 docker run --rm -it --name srb2kart \
     -v <path to data directory>:/data \
     -p <port on host>:5029/udp \
-    rwanyoike/srb2kart-server:<version> -dedicated -file \
-    addons/kl_xxx.pk3 \
-    addons/kl_xxx.wad \
-    addons/kr_xxx.pk3
+    ghcr.io/eoin-oneill-yokai/srb2kart-server
 ```
 
 ## Manual Build
