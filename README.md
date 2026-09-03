@@ -51,7 +51,7 @@ docker run --rm -it --name srb2kart \
 ## Manual Build
 
 ```bash
-git clone https://github.com/eoin-oneill-yokai/srb2kart-server-docker
+git clone https://github.com/eoin-oneill-yokai/srb2kart-server-docker:master
 cd srb2kart-server-docker/
 docker build --build-arg "SRB2KART_VERSION=<version>" \
     -t srb2kart-server:<version> .

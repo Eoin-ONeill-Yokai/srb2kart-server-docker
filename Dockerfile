@@ -5,6 +5,8 @@ ARG SRB2KART_VERSION=1.6
 ARG SRB2KART_USER=srb2kart
 ENV SRB2KART_DIRECTORY=/usr/share/games/SRB2Kart
 ENV SRB2KART_MODS_DIRECTORY=/home/${SRB2KART_USER}/.srb2kart/servermods
+#Stupidly high as default value, assuming that people don't want a mod limit
+ENV TOTAL_SERVER_MOD_QUOTA=128G
 
 # Ref: https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=srb2kart-data
 RUN set -ex \
@@ -44,6 +46,11 @@ RUN set -ex \
     && cp /srb2kart/bin/Linux64/Release/lsdl2srb2kart /usr/bin/srb2kart \
     && apk del .build-deps \
     && rm -rf /srb2kart
+
+RUN apk add --no-cache \
+        coreutils \
+        shadow \
+        bash
 
 # Add script that auto-loads mods from specific `servermods` folder, se SRB2KART_MODS_DIRECTORY
 COPY ./start-srb2kart-server.sh /usr/bin/start-srb2kart-server.sh
@@ -88,7 +95,6 @@ RUN sed -i 's/user nginx;/#user nginx;/g' /etc/nginx/nginx.conf
 
 # Don't forget to remove the default
 RUN rm /etc/nginx/conf.d/default.conf
-
 
 # User context switch
 USER ${SRB2KART_USER}

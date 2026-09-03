@@ -3,7 +3,8 @@ services:
     image: docker.io/eoinoneill1991/srb2kart-server:v1.6
     environment:
       - SERVER_NAME="SRB2Kart Docker Image"
-      - EXTRA_RUN_ARGS="" 
+      - EXTRA_RUN_ARGS=""
+      - TOTAL_SERVER_MOD_QUOTA=0.25G
     ports:
       - 5029:5029/udp
       - 8420:80
