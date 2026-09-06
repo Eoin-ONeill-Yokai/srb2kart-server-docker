@@ -1,4 +1,6 @@
 #!/bin/bash
+echo "Running SRB2Kart as $UID : $PID ..."
+
 echo "Mods directory: ${SRB2KART_MODS_DIRECTORY}"
 MOD_LAYERS=$(ls ${SRB2KART_MODS_DIRECTORY})
 UNSORTED_MODS=$(ls ${SRB2KART_MODS_DIRECTORY} | egrep '\.pk3$|\.wad$|\.lua$' | shuf)
