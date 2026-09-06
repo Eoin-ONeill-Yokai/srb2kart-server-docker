@@ -37,9 +37,5 @@ done
 echo "Mods active:\
 $MODS"
 
-echo "Starting NGINX for FastDL"
-nginx
-
-
 set -ex && srb2kart $@ -room 33 ${EXTRA_RUN_ARGS} -file ${MODS}
 
