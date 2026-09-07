@@ -2,7 +2,7 @@
 echo "Running SRB2Kart as $UID : $PID ..."
 
 echo "Mods directory: ${SRB2KART_MODS_DIRECTORY}"
-MOD_LAYERS=$(ls ${SRB2KART_MODS_DIRECTORY})
+MOD_LAYERS=$(ls -d ~/.srb2kart/servermods/*/ | while read line; do echo "$(basename $line)"; done)
 UNSORTED_MODS=$(ls ${SRB2KART_MODS_DIRECTORY} | egrep '\.pk3$|\.wad$|\.lua$' | shuf)
 
 echo "Mod quota: $TOTAL_SERVER_MOD_QUOTA"
