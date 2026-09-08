@@ -77,9 +77,9 @@ RUN adduser -D -u 10001 -g 10001 ${SRB2KART_USER} \
 
 
 # Direct download location definition
-COPY ./direct-download.conf /etc/nginx/conf.d/direct-download.conf
+COPY ./direct-download.conf /etc/nginx/conf.d/direct-download.conf.template
 RUN mkdir -p /var/www/html
-RUN chown -R root:www-data /etc/nginx/conf.d/direct-download.conf
+RUN chown -R root:www-data /etc/nginx/conf.d/direct-download.conf.template
 RUN ln -s /data/servermods /var/www/html/repo
 RUN chown -h ${SRB2KART_USER} /var/www/html/repo
 
@@ -101,9 +101,11 @@ USER ${SRB2KART_USER}
 RUN mkdir -p ${SRB2KART_MODS_DIRECTORY}
 WORKDIR ${SRB2KART_DIRECTORY}
 
+ENV FASTDL_PORT=8420
+
 # Port definition
 EXPOSE 5029/udp
-EXPOSE 80/tcp
+EXPOSE $FASTDL_PORT/tcp
 
 STOPSIGNAL SIGINT
 ENTRYPOINT ["start-srb2kart-server.sh"]
