@@ -50,7 +50,8 @@ RUN set -ex \
 RUN apk add --no-cache \
         coreutils \
         shadow \
-        bash
+        bash \
+        gettext
 
 # Add script that auto-loads mods from specific `servermods` folder, se SRB2KART_MODS_DIRECTORY
 COPY ./start-srb2kart-server.sh /usr/bin/start-srb2kart-server.sh
