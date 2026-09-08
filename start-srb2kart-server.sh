@@ -40,7 +40,7 @@ echo "Mods active:\
 $MODS"
 
 echo "Starting NGINX for FastDL"
-envsubst \"`env | awk -F = '{printf \" \\\\$%s\", $1}'`\" < /etc/nginx/conf.d/direct-download.conf.template > /etc/nginx/conf.d/default.conf
+envsubst < /etc/nginx/conf.d/direct-download.conf.template > /etc/nginx/conf.d/direct-download.conf
 nginx
 
 
