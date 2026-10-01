@@ -44,5 +44,5 @@ envsubst < /etc/nginx/conf.d/direct-download.conf.template > /etc/nginx/conf.d/d
 nginx
 
 
-set -ex && srb2kart $@ -room 33 ${EXTRA_RUN_ARGS} -file ${MODS}
+set -ex && srb2kart $@ -room 33 ${EXTRA_RUN_ARGS} -file ${MODS} ${EXTRA_MOD_FILES}
 
